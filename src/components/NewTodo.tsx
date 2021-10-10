@@ -1,19 +1,20 @@
-import { useRef } from "react";
+import { useRef, useContext } from "react";
+import { TodosContext } from "../store/todos-context";
 import classes from './NewTodo.module.css';
 
-const NewTodo: React.FC<{onAddToDo: (text: string) => void}> = ({onAddToDo}) => {
+const NewTodo: React.FC = () => {
     const todoText = useRef<HTMLInputElement>(null);
+    const todosCtx = useContext(TodosContext);
 
     const submitHandler = (e: React.FormEvent) => {
         e.preventDefault();
-        // ? нужен на случай если мы не сконнектили useref с элементом, в таком случае вернет undefined. Если уверены, что все подключили - можем заменить на !
         const enteredText = todoText.current!.value;
 
         if (enteredText?.trim().length === 0){
             return;
         }
 
-        onAddToDo(enteredText);
+        todosCtx.addTodo(enteredText);
     };
 
     return ( 
